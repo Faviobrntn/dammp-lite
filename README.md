@@ -7,7 +7,7 @@ Docker debe estar instalado y corriendo en el Sistema Operativo.
 - MySQL 5.7
 - PHPMyAdmin
 - Versiones de PHP configuradas: 
-    - php 5.6
+    - php 5.6 (por ahora no)
     - php 7.0
     - php 7.2
     - php 7.4
@@ -40,6 +40,7 @@ Estando dentro de la carpeta del proyecto, se pueden visualizar las siguiente ca
 - **config** - No tocar, va alojada configuración necesaria
 - **htdocs** - Aquí vamos a ir poniendo nuestros proyectos PHP.
 - **volumenes** - No tocar, esta carpeta permite que los datos de su DB persistan.
+- **.env** - Este archivo contiene toda la configuración de puertos y nombre, puede editar el que quiera (solo recuerde que lo cambio)
 
 Dentro de la carpeta raíz, va a usar el siguiente comando:
 `docker-compose up --build -d`, este comando se encarga de descargar las imágenes y crear los contenedores.
@@ -47,6 +48,7 @@ Dentro de la carpeta raíz, va a usar el siguiente comando:
 Si todo salio bien, ya podrá poner sus proyectos/scripts PHP dentro de la carpeta htdocs y visualizarlos en el navegador.
 
 ## Links
+Es libre de cambiar los puertos por los que desee, esta configuración se encuentra en el archivo .env
 - PhpMyAdmin en http://localhost:8081/ (Usuario: root | Contraseña: root)
 - Apache con PHP 7.0 en http://localhost:70/
 - Apache con PHP 7.2 en http://localhost:72/
@@ -63,7 +65,7 @@ Tengo un proyecto que se llama "prueba" que esta en la version 7.0 de PHP
 ## Comandos útiles
 - Ver listado de contenedores `docker ps -a`
 - Entrar a la consola de un contenedor: `docker exec -it <NOMBRE_CONTENEDOR> /bin/bash`.  
-    - Recomiendo ejecutar el comando con los permisos de usuario asi evitas ese problema al generar archivos desde adentro cuando tenes una carpeta compartida. Suponiendo que quiero ingresar al contenedor de apache con php 7.4, ejecutamos: `docker exec -it -u $(id -u):$(id -g) apache-php74 /bin/bash`
+    - Recomiendo ejecutar el comando con los permisos de usuario asi evitas ese problema al generar archivos desde adentro cuando tenes una carpeta compartida. Suponiendo que quiero ingresar al contenedor de apache con php 7.4, ejecutamos: `docker exec -it -u $(id -u):$(id -g) dammp-php74 /bin/bash`
 - Detener todos los contenedores: `docker-compose down` (solo funciona dentro del la carpeta raíz)
 - Volver a levantar los contenedores: `docker-compose up -d` (solo funciona dentro del la carpeta raíz)
-- Como saber mi IP: `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <contenedor>`. Ejemplo: `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'  apache-php74`
+- Como saber mi IP: `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <contenedor>`. Ejemplo: `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'  dammp-php74`
