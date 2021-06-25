@@ -25,6 +25,17 @@ ARG DEPS="\
         php7.4-bcmath \
         php7.4-calendar \
         php7.4-mbstring \
+        php7.4-intl \
+        php7.4-mysqli \
+        php7.4-pdo_mysql \
+        php7.4-pdo_pgsql \
+        php7.4-pgsql \
+        php7.4-redis \
+        php7.4-soap \
+        php7.4-xsl \
+        php7.4-memcached \
+        php7.4-gd \
+        php7.4-ldap \
         php7.4-exif \
         php7.4-ftp \
         php7.4-openssl \

@@ -10,12 +10,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    
       #- MYSQL_DATABASE="wordpressdb"
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
+      #- MYSQL_USER=root
+      #- MYSQL_PASSWORD=root
     volumes:
     # Montamos un volumen para MySQL para no perder los datos de bd
       - ./volumenes/mysql:/var/lib/mysql
-      - ./volumenes/mysql_logs:/var/lib/mysql/mysql-bin
+      #- ./volumenes/mysql_logs:/var/lib/mysql/mysql-bin
     expose:
       - 3306
   
