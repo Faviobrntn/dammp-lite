@@ -67,6 +67,8 @@ ARG DEPS="\
         ca-certificates \
         runit \
         apache2 \
+        ssmtp \
+        wget \
 "
 
 # PHP.earth Alpine repository for better developer experience
@@ -78,6 +80,8 @@ RUN set -x \
     && mkdir -p /run/apache2 \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log
+
+RUN wget -qO- https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer;
 
 COPY ./docker/tags/apache /
 

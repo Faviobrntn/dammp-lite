@@ -5,7 +5,7 @@ services:
     image: mysql:latest
     #image: yobasystems/alpine-mariadb
     #image: bianjp/mariadb-alpine
-    container_name: "${MYSQL_NAME}"
+    container_name: "${CONTAINER_NAME}_mysql"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    
@@ -24,58 +24,64 @@ services:
       context: .
       dockerfile: docker/74-apache.Dockerfile
     restart: always
+    container_name: "${CONTAINER_NAME}_php74"
     volumes:
       #- ./htdocs/:/var/www/html/
       - ./htdocs/:/var/www/localhost/htdocs/
-    container_name: "${PHP_NAME}74"
+      # - ./config/custom.php.ini:/usr/local/etc/php/conf.d/custom.php.ini
+      # - ./config/php.ini:/etc/php7/php.ini
+      - ./config/php.ini:/etc/php/7.4/conf.d/php.ini
+      - ./config/ssmtp.conf:/etc/ssmtp/ssmtp.conf
     expose:
       - 8080
     ports:
       - ${PHP74_PORT}:80
-    links: 
+    links:
+      - mongo
+      - mailhog
       - mysql
   
-  php72:
-    build:
-      context: .
-      dockerfile: docker/72-apache.Dockerfile
-      args:
-        PHP_VERSION: "7.2"
-    restart: always
-    volumes:
-      #- ./htdocs/:/var/www/html/
-      - ./htdocs/:/var/www/localhost/htdocs/
-    container_name: "${PHP_NAME}72"
-    expose:
-      - 8080
-    ports:
-      - ${PHP72_PORT}:80
-    links: 
-      - mysql
+  # php72:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/72-apache.Dockerfile
+  #     args:
+  #       PHP_VERSION: "7.2"
+  #   restart: always
+  #   volumes:
+  #     #- ./htdocs/:/var/www/html/
+  #     - ./htdocs/:/var/www/localhost/htdocs/
+  #   container_name: "${CONTAINER_NAME}_php72"
+  #   expose:
+  #     - 8080
+  #   ports:
+  #     - ${PHP72_PORT}:80
+  #   links: 
+  #     - mysql
   
-  php70:
-    build:
-      context: .
-      dockerfile: docker/70-apache.Dockerfile
-      args:
-        PHP_VERSION: "7.0"
-    restart: always
-    volumes:
-      #- ./htdocs/:/var/www/html/
-      - ./htdocs/:/var/www/localhost/htdocs/
-    container_name: "${PHP_NAME}70"
-    expose:
-      - 8080
-    ports:
-      - ${PHP70_PORT}:80
-    links: 
-      - mysql
+  # php70:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/70-apache.Dockerfile
+  #     args:
+  #       PHP_VERSION: "7.0"
+  #   restart: always
+  #   volumes:
+  #     #- ./htdocs/:/var/www/html/
+  #     - ./htdocs/:/var/www/localhost/htdocs/
+  #   container_name: "${CONTAINER_NAME}_php70"
+  #   expose:
+  #     - 8080
+  #   ports:
+  #     - ${PHP70_PORT}:80
+  #   links: 
+  #     - mysql
 
   phpmyadmin:
     #image: phpmyadmin:fpm-alpine
     #image: phpmyadmin/phpmyadmin:fpm-alpine
     image: phpmyadmin/phpmyadmin
-    container_name: "${PHPMYADMIN_NAME}"
+    container_name: "${CONTAINER_NAME}_phpmyadmin"
     restart: always
     ports: 
       - ${PHPMYADMIN_PORT}:80
@@ -91,9 +97,21 @@ services:
 
   mongo:
     image: mongo
-    container_name: ${MONGO_NAME}
+    container_name: ${CONTAINER_NAME}_mongo
     restart: always
     volumes:
       - ./volumenes/mongodb:/data/db
     ports:
       - ${MONGO_PORT}:27017
+
+
+  mailhog:
+    image: mailhog/mailhog:latest 
+    container_name: ${CONTAINER_NAME}_mailhog
+    logging:
+        driver: 'none'  # disable saving logs
+    ports:
+        # - "${MAILHOG_PORT}:1025"
+        # - "${MAILHOG_PORT}:8025"
+        - "1025:1025" # smtp server
+        - "8025:8025" # web ui
