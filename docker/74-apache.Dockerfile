@@ -29,6 +29,7 @@ ARG DEPS="\
         php7.4-mysqli \
         php7.4-pdo_mysql \
         php7.4-pdo_pgsql \
+        # php7.4-pdo_sqlsrv \
         php7.4-pgsql \
         php7.4-redis \
         php7.4-soap \
@@ -63,6 +64,8 @@ ARG DEPS="\
         php7.4-posix \
         php7.4-apache2 \
         php7.4-mongodb \
+        sqlite \
+        # sqlsrv \
         curl \
         ca-certificates \
         runit \
